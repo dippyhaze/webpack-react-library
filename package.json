@@ -1,7 +1,7 @@
 {
   "name": "webpack-react-library",
-  "version": "1.0.18",
-  "description": "creating a webcomponent UI library starting from React Components",
+  "version": "1.0.19",
+  "description": "Creating a webcomponent UI library starting from React Components",
   "exports": {
     ".": "./dist/index.js",
     "./call-composite": "./dist/lib/call-composite/index.js"
