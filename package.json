@@ -1,6 +1,6 @@
 {
   "name": "webpack-react-library",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Creating a webcomponent UI library starting from React Components",
   "exports": {
     ".": "./dist/index.js",
@@ -8,7 +8,8 @@
   },
   "scripts": {
     "serve": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "prepare-package": "rm -rf node_modules && rm -rf package.json.lock && rm -rf dist && npm i && webpack --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",
