@@ -3,11 +3,32 @@ import { render, unmountComponentAtNode } from "react-dom";
 import CallCompositeWrapper from "./CallCompositeWrapper";
 
 export class WebCallComposite extends HTMLElement {
-  disconnectedCallback() {
-    this.unmount();
+  static get observedAttributes() {
+    return ["participantids", "token", "displayname", "userid"];
   }
 
-  connectedCallback() {
+  customAttributesAreValid() {
+    const tokenIsValid =
+      this.attributes.getNamedItem("token") &&
+      this.attributes.getNamedItem("token").value !== "";
+    const participantidsIsValid =
+      this.attributes.getNamedItem("participantids") &&
+      this.attributes.getNamedItem("participantids").value !== "";
+    const displaynameIsValid =
+      this.attributes.getNamedItem("displayname") &&
+      this.attributes.getNamedItem("displayname").value !== "";
+    const useridIsValid =
+      this.attributes.getNamedItem("userid") &&
+      this.attributes.getNamedItem("userid").value !== "";
+    return (
+      tokenIsValid &&
+      participantidsIsValid &&
+      displaynameIsValid &&
+      useridIsValid
+    );
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
     this.mount();
   }
 
@@ -17,12 +38,21 @@ export class WebCallComposite extends HTMLElement {
       ...this.getEvents(),
       children: this.parseHtmlToReact(this.innerHTML),
     };
-    console.log({ ...props });
-    render(<CallCompositeWrapper {...props} />, this);
+    if (this.customAttributesAreValid()) {
+      render(<CallCompositeWrapper {...props} />, this);
+    } else render(<h3> Initializing ...</h3>, this);
   }
 
   unmount() {
     unmountComponentAtNode(this);
+  }
+
+  disconnectedCallback() {
+    this.unmount();
+  }
+
+  connectedCallback() {
+    this.mount();
   }
 
   parseHtmlToReact(html) {
